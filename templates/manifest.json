@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "design-system-package/v1",
+  "id": "⟨slug-da-marca⟩",
+  "name": "⟨Nome da marca⟩",
+  "description": "⟨Resumo de uma linha⟩",
+  "source": {
+    "type": "⟨figma | pdf | tokens-publicados⟩",
+    "origin": "⟨file key + node IDs, caminho do PDF, ou pacote@versão⟩",
+    "extractedAt": "⟨AAAA-MM-DD⟩"
+  },
+  "files": {
+    "design": "DESIGN.md",
+    "tokens": "tokens.css"
+  }
+}
