@@ -8,7 +8,7 @@ Este arquivo **não** é o contrato do projeto — ele é o gerador. O contrato 
 
 ## 0. Como usar
 
-1. Copie a pasta inteira para a raiz do repositório (ou cole este arquivo e os que ele aponta no início da sessão).
+1. Copie a pasta para a raiz do repositório, sem `.github/`, que é a CI do próprio pacote (ou cole este arquivo e os que ele aponta no início da sessão).
 2. Diga ao agente: **"Siga `AGENT-BOOTSTRAP.md`."**
 3. O agente entrevista (`skills/bootstrap-interview`), propõe módulos, você aprova, ele gera.
 

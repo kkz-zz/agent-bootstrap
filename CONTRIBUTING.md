@@ -19,6 +19,12 @@ Contribuição boa aqui é regra que veio de um setup real e evitou um problema 
 
 1. Abra uma issue descrevendo o problema que a regra resolve.
 2. PR com uma mudança temática por vez. Se mexer em ID de módulo (M1–M15) ou de pergunta (A1, D9…), atualize todas as referências.
-3. Teste de fumaça: rode o bootstrap com um agente num repositório de exemplo e anexe ao PR o trecho da sessão em que a regra nova atuou.
+3. Rode localmente o que a CI roda, e anexe a saída ao PR:
+   ```
+   python3 -I .github/scripts/run_canaries.py
+   python3 -I .github/scripts/check_docs.py .
+   ```
+   Regra nova no `check_docs.py` entra com caso em `.github/canarios/check-docs/must-block/<regra>/`; sem ele, os canários reprovam.
+4. Teste de fumaça: rode o bootstrap com um agente num repositório de exemplo e anexe ao PR o trecho da sessão em que a regra nova atuou.
 
 Ao contribuir, você concorda em licenciar sua contribuição sob [CC BY-SA 4.0](LICENSE).

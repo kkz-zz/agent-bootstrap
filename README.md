@@ -8,7 +8,7 @@ Não é framework nem dependência. São arquivos Markdown que o agente lê. Dep
 
 ## Como usar
 
-1. Copie esta pasta para a raiz do repositório.
+1. Copie esta pasta para a raiz do repositório, **sem** a pasta `.github/`: ela é a CI deste pacote, não do seu projeto.
 2. Diga ao agente: **"Siga `AGENT-BOOTSTRAP.md`."**
 3. Responda as rodadas de perguntas. Aprove os módulos. Revise os PRs.
 
@@ -28,6 +28,7 @@ modulos/
   engenharia.md                 M6, M7, M8, M9, M10, M12
 templates/
   ADR-0000.md  CONTEXT.md  DESIGN.md  manifest.json
+.github/                        CI deste pacote (não copiar): check-docs, canários, workflow
 ```
 
 ## Modos
