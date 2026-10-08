@@ -1,0 +1,40 @@
+# CI do pacote agent-bootstrap. Regras em modulos/seguranca.md (M5).
+# Mudança neste arquivo vai em PR dedicado.
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  docs:
+    name: docs
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    defaults:
+      run:
+        shell: bash  # bash -eo pipefail: nenhum exit code engolido
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      # gate: não remover sem PR dedicado. Canários antes do gate.
+      - name: Canários do check-docs
+        run: python3 -I .github/scripts/run_canaries.py
+
+      # gate: não remover sem PR dedicado.
+      - name: check-docs (links, âncoras, IDs de pergunta e módulo)
+        run: python3 -I .github/scripts/check_docs.py .
+
+      # gate: não remover sem PR dedicado.
+      - name: Espaço em branco e marcador de conflito
+        run: git diff --check "$(git hash-object -t tree /dev/null)" HEAD
