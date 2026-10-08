@@ -24,7 +24,7 @@ Ao terminar, a pasta pode sair do repositório — ela já cumpriu a função. O
 | `modulos/design.md` | M2, M13, bloco D da entrevista, pacote `DESIGN.md` | Se existe interface ou documento gerado |
 | `skills/design-critique/SKILL.md` | Revisão de qualidade visual em 5 dimensões | Antes de entregar qualquer peça visual |
 | `modulos/seguranca.md` | M4, M5, fronteira de sessão (C4), M7 no que toca segurança | Sempre |
-| `modulos/privacidade.md` | M11, bloco E da entrevista | Se coleta dado de pessoa |
+| `modulos/privacidade.md` | M11, bloco E da entrevista, inventário, gates de privacidade, referências de LGPD e ECA Digital | Se coleta dado de pessoa ou o produto é de acesso provável por menores |
 | `modulos/ia.md` | M3 (anti-slop), uso de agente no repositório, M14 (produto com LLM) — mapeados ao OWASP Top 10 para LLM 2026 | Sempre |
 | `modulos/engenharia.md` | M6, M7, M8, M9, M10, M12 | Por gatilho |
 | `templates/` | ADR, `CONTEXT.md`, `DESIGN.md`, `manifest.json` | Fase 3 |
@@ -74,7 +74,7 @@ Ative por gatilho, não por gosto. Para cada módulo ativado, diga ao dono o que
 | M8 | Monorepo | B2 = monorepo | `modulos/engenharia.md` |
 | M9 | Mobile e desktop | C1 inclui app nativo, híbrido ou desktop | `modulos/engenharia.md` |
 | M10 | Conteúdo versionado | E5 indica texto no repositório | `modulos/engenharia.md` |
-| M11 | Dados pessoais e conformidade | E1 ou E2 afirmativo | `modulos/privacidade.md` |
+| M11 | Dados pessoais e conformidade | E1, E2 ou E11 afirmativo | `modulos/privacidade.md` |
 | M12 | Dinheiro, fiscal e cálculo crítico | G3 indica bug silencioso | `modulos/engenharia.md` |
 | M13 | Documentos gerados | emite .docx, .pdf, .xlsx, .svg, .dxf | `modulos/design.md` |
 | M14 | Produto que usa LLM | H1 afirmativo | `modulos/ia.md` |
@@ -97,7 +97,8 @@ Gere só depois da aprovação, e só os do modo escolhido. Uma branch e um PR p
 | `docs/rules/anti-slop.md` | se M3 | Tabelas de proibido em conteúdo, em código e em entrega, com o motivo; o que o gate pega e o que fica para revisão humana |
 | `docs/rules/ia.md` | sempre | Permissões do agente, fontes não confiáveis, MCP, e — se M14 — controles por risco do OWASP LLM Top 10 |
 | `docs/rules/seguranca.md` | todos | Fronteira entre superfícies, segredos, validação, cabeçalhos, supply chain, pipeline, checklist de revisão de diff de IA |
-| `docs/rules/privacidade.md` | se M11 | Base legal por finalidade, inventário de dados, retenção, consentimento, canal do titular |
+| `docs/rules/privacidade.md` | se M11 | Inventário com base legal por finalidade (artigo e inciso), testes de legítimo interesse, matriz de retenção, consentimento, canal e prazos do titular, operadores e transferências internacionais |
+| `docs/runbooks/incidente-dados.md` | se M11, médio e completo | Quem decide, prazos de comunicação à ANPD e aos titulares, modelo de comunicação, onde fica o registro do incidente |
 | `docs/adr/0000-template.md` | médio, completo | Cópia de `templates/ADR-0000.md` |
 | `docs/adr/0001…` | médio, completo | Um ADR por decisão já tomada na entrevista. No mínimo: stack; arquitetura e fronteiras; design system e marca; guardrails; segurança e supply chain. Risco que bloqueia alguma frente entra numerado |
 | `CHECKLIST.md` | médio, completo | Auditoria verificável, item por item, cada um com **comando de verificação** e, quando o sucesso é "nada encontrado", o **caso-controle** |
@@ -111,7 +112,7 @@ Gere só depois da aprovação, e só os do modo escolhido. Uma branch e um PR p
 | workflow de CI | completo | Ver M5. Todos os checks bloqueantes, canários antes dos gates |
 | workflow de scan de segredos | completo | Histórico completo, bloqueante |
 | config do bot de dependência | completo | Modo na primeira linha, majors fora, agrupado |
-| `CODEOWNERS` | completo | Caminhos do harness mais contrato, ADRs e pacote de design system |
+| `CODEOWNERS` | completo | Caminhos do harness mais contrato, ADRs, pacote de design system e, se M11, `docs/rules/privacidade.md` e `docs/runbooks/incidente-dados.md` |
 | config de pins do gerenciador | completo | Versão exata por padrão |
 
 Placeholder que o dono precisa preencher: use `⟨...⟩` e liste todos no final, com o comando que resolve cada um quando houver.
@@ -157,6 +158,9 @@ Observados em setups reais. Se você cometeu um, refaça o passo.
 - Aplicar modo Completo a script pessoal.
 - Mexer no harness de carona num PR de outra coisa.
 - Pôr segredo ou regra de autorização em `AGENTS.md`, `CLAUDE.md` ou prompt de sistema.
+- Usar dado pessoal real em fixture, seed, log, issue ou prompt de ferramenta externa.
+- Escrever "em conformidade com a LGPD" em qualquer arquivo gerado, ou entregar política de privacidade sem a marca `⟨revisão jurídica⟩`.
+- Escolher base legal sem artigo e inciso, ou legítimo interesse sem teste de balanceamento registrado.
 - Entregar peça visual sem passar pela `design-critique`.
 - Fechar o setup sem listar os `⟨placeholders⟩` e os riscos que ficaram abertos.
 

@@ -20,6 +20,7 @@ Segurança de M7 está em `modulos/seguranca.md`. Identidade visual de M6 e M9 e
 
 - Contrato de API versionado; **dono do contrato definido** quando há mais de um repositório, e ordem contrato → provedor → consumidor.
 - Migração de banco: para frente, reversível, testada em cópia; nunca destrutiva no mesmo deploy da mudança de código que depende dela.
+- Migração que cria campo com dado pessoal atualiza o inventário no mesmo PR (M11, gate `inventário-acompanha-schema`).
 
 ---
 
@@ -38,6 +39,7 @@ Segurança de M7 está em `modulos/seguranca.md`. Identidade visual de M6 e M9 e
 - Literal de cor proibido também na linguagem nativa — o gate cobre esses arquivos.
 - Requisito de hardware ou periférico vira **spike com risco registrado antes** de virar dependência de cronograma. Plano B nomeado.
 - Assinatura e distribuição de build: quem tem a chave, onde ela vive, o que acontece se ela for perdida.
+- SDK de terceiro no app (analytics, anúncio, crash, atribuição) segue o M11 como script de terceiro na web: entra no inventário e na política no mesmo PR, e o que não é necessário só inicializa depois do consentimento.
 - Offline, se for eliminatório (B5): fonte de verdade local, estratégia de resolução de conflito e teste que **desliga a rede** fazem parte do gate, não da intenção.
 
 ---

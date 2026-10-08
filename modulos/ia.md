@@ -88,7 +88,8 @@ Para cada risco: o que é, como aparece, o que o repositório exige. Riscos que 
 
 **Controles.**
 - Só entra no contexto o dado que aquela chamada precisa, filtrado pela permissão do usuário **antes** de chegar ao modelo.
-- Dado enviado ao provedor consta no inventário de `modulos/privacidade.md`, com a política de retenção do provedor registrada.
+- Dado enviado ao provedor consta no inventário de `modulos/privacidade.md`, com a política de retenção do provedor e o uso (ou não) para treino registrados.
+- Provedor hospedado fora do Brasil é transferência internacional: país e mecanismo na linha do inventário (M11).
 - Log de prompt e resposta sem dado pessoal, ou com retenção curta e acesso restrito.
 
 ### LLM03:2026 · Excessive Agency

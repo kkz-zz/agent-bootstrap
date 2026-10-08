@@ -6,7 +6,7 @@ Contribuição boa aqui é regra que veio de um setup real e evitou um problema 
 
 - **Regra nova em um módulo**, com o motivo: o que deu errado sem ela.
 - **Módulo novo**, com gatilho de entrevista que o ativa e os arquivos que ele gera.
-- **Correção** de regra que não se verifica em diff, ou de referência desatualizada (ex.: nova edição do OWASP).
+- **Correção** de regra que não se verifica em diff, ou de referência desatualizada (ex.: nova edição do OWASP, norma ou guia novo da ANPD). Fonte de privacidade é a norma oficial ou a página da ANPD, citada pelo artigo ou pelo título; blog de escritório serve para achar, não para citar.
 - **Tradução** dos arquivos para outro idioma, em pasta própria.
 
 ## O que não aceitamos
