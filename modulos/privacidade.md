@@ -197,14 +197,12 @@ Norma é citada pelo artigo. Texto oficial de lei e ato normativo não tem prote
 | [Lei 15.352/2026](https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2026/lei/L15352.htm) | ANPD como Agência Nacional de Proteção de Dados |
 | [Lei 15.211/2025 — ECA Digital](https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/lei/l15211.htm) | Requisitos para produto direcionado ou de acesso provável por menores |
 | [Lei 12.965/2014 — Marco Civil da Internet](https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2014/lei/l12965.htm) | Guarda de registros de acesso (art. 15) |
-| Decreto 12.880/2026 ⟨pendente: link oficial (mantenedor)⟩ | Regulamentação do ECA Digital |
+| Decreto 12.880/2026 | Regulamentação do ECA Digital |
 | Resolução CD/ANPD 2/2022 | Agente de tratamento de pequeno porte ⟨pendente: citar os artigos (dispensa de encarregado, registro simplificado, prazos em dobro, alto risco) conferidos no texto oficial, e o que a Res. 15/2024 alterou nela (mantenedor)⟩ |
 | Resolução CD/ANPD 15/2024 | Comunicação de incidente de segurança |
 | Resolução CD/ANPD 18/2024 | Encarregado |
 | Resolução CD/ANPD 19/2024 | Transferência internacional e cláusulas-padrão |
 | Resolução CD/ANPD 32/2026 | Adequação da União Europeia para transferência internacional |
-
-⟨pendente: link de cada resolução para o texto oficial no DOU ou na ANPD (mantenedor)⟩
 
 As resoluções estão na página de [regulamentações da ANPD](https://www.gov.br/anpd/pt-br/acesso-a-informacao/institucional/atos-normativos/regulamentacoes_anpd).
 
