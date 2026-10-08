@@ -94,6 +94,7 @@ Bloco que não se aplica, pule e diga por quê.
 - **C4.** Duas superfícies compartilham domínio pai, e uma delas tem sessão? → regra em `modulos/seguranca.md`.
 - **C5.** Alguma superfície embute outra (iframe, webview, postMessage)?
 - **C6.** Login único entre as superfícies, ou cada uma autentica sozinha?
+- **C7.** O cliente fala direto com o banco (Firebase, Supabase ou outro BaaS)? Há ambientes separados de desenvolvimento, teste e produção, e quem tem credencial de produção? → regra em `modulos/seguranca.md`.
 
 ### D — Identidade visual
 

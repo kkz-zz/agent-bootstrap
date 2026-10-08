@@ -23,7 +23,7 @@ Ao terminar, a pasta pode sair do repositório — ela já cumpriu a função. O
 | `modulos/nucleo.md` | M1 e regras de verificação | Sempre |
 | `modulos/design.md` | M2, M13, bloco D da entrevista, pacote `DESIGN.md` | Se existe interface ou documento gerado |
 | `skills/design-critique/SKILL.md` | Revisão de qualidade visual em 5 dimensões | Antes de entregar qualquer peça visual |
-| `modulos/seguranca.md` | M4, M5, fronteira de sessão (C4), M7 no que toca segurança | Sempre |
+| `modulos/seguranca.md` | M4, M5, fronteira de sessão (C4), banco no cliente e ambientes (C7), código gerado por IA, segredos na pipeline, M7 no que toca segurança | Sempre |
 | `modulos/privacidade.md` | M11, bloco E da entrevista, inventário, gates de privacidade, referências de LGPD e ECA Digital | Se coleta dado de pessoa ou o produto é de acesso provável por menores |
 | `modulos/ia.md` | M3 (anti-slop), uso de agente no repositório, M14 (produto com LLM) — mapeados ao OWASP Top 10 para LLM 2026 | Sempre |
 | `modulos/engenharia.md` | M6, M7, M8, M9, M10, M12 | Por gatilho |
@@ -95,8 +95,8 @@ Gere só depois da aprovação, e só os do modo escolhido. Uma branch e um PR p
 | `design-system/<marca>/` | se M2 | `manifest.json` + `DESIGN.md` + `tokens.css` por marca. Ver `modulos/design.md` |
 | `docs/rules/design-system.md` | se M2 | A regra em uma frase, camadas, mecânica de marca e tema, fluxo de mudança de cor, o que o gate verifica. Aponta para o pacote; não repete valores |
 | `docs/rules/anti-slop.md` | se M3 | Tabelas de proibido em conteúdo, em código e em entrega, com o motivo; o que o gate pega e o que fica para revisão humana |
-| `docs/rules/ia.md` | sempre | Permissões do agente, fontes não confiáveis, MCP, e — se M14 — controles por risco do OWASP LLM Top 10 |
-| `docs/rules/seguranca.md` | todos | Fronteira entre superfícies, segredos, validação, cabeçalhos, supply chain, pipeline, checklist de revisão de diff de IA |
+| `docs/rules/ia.md` | sempre | Permissões do agente, sandbox e alcance de rede, memória persistente, fontes não confiáveis, MCP, e — se M14 — controles por risco do OWASP LLM Top 10 |
+| `docs/rules/seguranca.md` | todos | Fronteira entre superfícies, segredos (inclusive em artefato e na pipeline), autorização no servidor, funções proibidas, validação, cabeçalhos, supply chain, pipeline, checklist de revisão de diff de IA |
 | `docs/rules/privacidade.md` | se M11 | Inventário com base legal por finalidade (artigo e inciso), testes de legítimo interesse, matriz de retenção, consentimento, canal e prazos do titular, operadores e transferências internacionais |
 | `docs/runbooks/incidente-dados.md` | se M11, médio e completo | Quem decide, prazos de comunicação à ANPD e aos titulares, modelo de comunicação, onde fica o registro do incidente |
 | `docs/adr/0000-template.md` | médio, completo | Cópia de `templates/ADR-0000.md` |
@@ -109,7 +109,7 @@ Gere só depois da aprovação, e só os do modo escolhido. Uma branch e um PR p
 | gates (`scripts/`) | se M2, M3, M12 | Um script por gate, com saída dizendo arquivo, linha, regra e **o que fazer**. Válvula de escape exigindo justificativa na mesma linha |
 | canários (`scripts/`) | sempre que houver gate | Casos must-block e must-pass por gate, mais checagem de **cobertura de padrões** |
 | `scripts/setup.sh` | se houver hook | Restaura bit de execução. Zip e Windows perdem, e sem ele o hook não roda |
-| workflow de CI | completo | Ver M5. Todos os checks bloqueantes, canários antes dos gates |
+| workflow de CI | completo | Ver M5. Todos os checks bloqueantes, canários antes dos gates, SAST da linguagem do projeto |
 | workflow de scan de segredos | completo | Histórico completo, bloqueante |
 | config do bot de dependência | completo | Modo na primeira linha, majors fora, agrupado |
 | `CODEOWNERS` | completo | Caminhos do harness mais contrato, ADRs, pacote de design system e, se M11, `docs/rules/privacidade.md` e `docs/runbooks/incidente-dados.md` |
@@ -127,7 +127,7 @@ Na ordem. Detalhe longo não entra aqui — vai para `docs/rules/` e aparece com
 0. Postura                  não presuma; trade-off exposto; evidência; discorde citando a regra; idioma
 1. O que é este repositório  uma frase + o que NÃO é + o que fazer se pedirem o que não é
 2. Comandos                  os que existem de verdade, com o que roda antes de "terminei"
-3. Regras invioláveis        numeradas, checáveis em diff, com exemplo ✅/❌ onde ajudar
+3. Regras invioláveis        numeradas, checáveis em diff, com exemplo ✅/❌ onde ajudar; inclui as de segurança da stack, citando CWE ou OWASP
 4. Regras de STOP            tabela sintoma | PARE, não faça | caminho correto
 5. Superfícies e fronteiras  tabela de superfície × marca × sessão × repositório
 6. Conteúdo / domínio        ponteiro para CONTEXT.md + invariantes e unidades
@@ -159,6 +159,8 @@ Observados em setups reais. Se você cometeu um, refaça o passo.
 - Mexer no harness de carona num PR de outra coisa.
 - Pôr segredo ou regra de autorização em `AGENTS.md`, `CLAUDE.md` ou prompt de sistema.
 - Usar dado pessoal real em fixture, seed, log, issue ou prompt de ferramenta externa.
+- Dar ao agente credencial de produção, rede livre ou memória persistente fora do controle de versão.
+- Aceitar autenticação ou autorização checada só no cliente.
 - Escrever "em conformidade com a LGPD" em qualquer arquivo gerado, ou entregar política de privacidade sem a marca `⟨revisão jurídica⟩`.
 - Escolher base legal sem artigo e inciso, ou legítimo interesse sem teste de balanceamento registrado.
 - Entregar peça visual sem passar pela `design-critique`.
