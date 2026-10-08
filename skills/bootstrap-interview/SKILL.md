@@ -101,7 +101,7 @@ Perguntas e regras em `modulos/design.md`. Não escolha cor, fonte ou escala ant
 
 ### E — Dados pessoais e conteúdo
 
-Perguntas e regras em `modulos/privacidade.md` (E1–E4) e `modulos/engenharia.md` (E5, E6).
+Perguntas e regras em `modulos/privacidade.md` (E1–E4a, E7–E13) e `modulos/engenharia.md` (E5, E6).
 
 ### F — Processo
 
