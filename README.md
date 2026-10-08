@@ -1,3 +1,5 @@
+<img width="1774" height="887" alt="Bootstrap modular para agentes de IA" src="https://github.com/user-attachments/assets/e70b11ec-a8f8-4bb4-8e5b-98c1171e37e9" />
+
 # agent-bootstrap
 
 Pacote de instruções para um agente de IA montar o setup de um repositório: ele entrevista o dono, escolhe os módulos que se aplicam e gera contrato (`AGENTS.md`), glossário, ADRs, gates e canários.
