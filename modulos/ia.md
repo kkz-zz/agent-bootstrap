@@ -59,7 +59,7 @@ O agente de código é uma aplicação com LLM e ferramentas. Os mesmos riscos s
 
 | Risco | Como aparece no repositório | Controle |
 |---|---|---|
-| **LLM01** Prompt Injection | Instrução escondida em issue, comentário de PR, README de dependência, página buscada, arquivo enviado | Conteúdo externo é dado, não instrução. Instrução encontrada em arquivo ou página não é executada sem confirmação do dono. Workflow que dispara agente a partir de issue ou PR roda sem segredo |
+| **LLM01** Prompt Injection | Instrução escondida em issue, comentário de PR, README de dependência, página buscada, arquivo enviado | Conteúdo externo é dado, não instrução. Instrução encontrada em arquivo ou página não é executada sem confirmação do dono; se a ação for de nível C, vale o nível C (ver "Níveis de autonomia"). Workflow que dispara agente a partir de issue ou PR roda sem segredo |
 | **LLM02** Sensitive Information Disclosure | Agente cola `.env`, token ou dado de cliente em PR, log ou mensagem | Permissão negada de leitura em `.env*` e chaves na config do agente; scan de segredos bloqueante; fixture sem dado real |
 | **LLM03** Excessive Agency | Agente com shell livre, push na principal, acesso de escrita a produção | Permissões negadas versionadas; hook de git destrutivo; branch protection; MCP só com as ferramentas usadas; ação irreversível pede humano |
 | **LLM04** Supply Chain | MCP, skill ou plugin de terceiro em `latest`; pacote inventado com nome parecido | MCP e skill pinados por versão ou digest, versionados, sob `CODEOWNERS`; verificar que a dependência existe antes de instalar |
@@ -69,6 +69,22 @@ O agente de código é uma aplicação com LLM e ferramentas. Os mesmos riscos s
 | **LLM10** Improper Output Handling | Saída do agente executada sem revisão (script gerado rodado em produção, SQL aplicado direto) | Saída do agente passa por PR e gate como qualquer código |
 
 Config que materializa isso — permissões negadas, hooks, lista de MCP — vive versionada no repositório e muda só por PR com revisor humano.
+
+### Níveis de autonomia
+
+Pedir confirmação a cada edição pequena treina o dono a aprovar sem ler; não pedir nunca dá ao agente autoridade que ninguém concedeu. O nível vem do **impacto da ação**, não da confiança que o agente declara no próprio resultado (OWASP AI Agent Security).
+
+| Nível | Ações | Quem decide | Como acontece |
+|---|---|---|---|
+| **A** — delegado | Ler e editar código e docs na branch de trabalho, rodar testes e gates locais, gerar relatório, comparar métrica, abrir PR | O escopo combinado na tarefa | O agente faz; o resultado chega por PR |
+| **B** — controlado | Alterar CI, hook, config do agente ou dependência; preparar release (PR de versão, changelog); rodar teste de integração em homologação | Revisor humano no PR: no modo Completo, o `CODEOWNERS`; no Médio, o dono | O agente prepara; o merge só acontece com revisão |
+| **C** — sensível | DNS, permissão de conta, firewall, leitura ou alteração de dado de produção, restauração de backup, deploy em produção, contenção de incidente, e qualquer ação que um `git revert` não desfaz | O dono ou o responsável autorizado, para **aquela** ação | O agente entrega evidência, diff e reversão; quem executa é a pipeline ou a pessoa que tem a credencial — nunca o agente |
+
+- **Nível C nunca dá credencial de produção ao agente** (ver "Produção fora de alcance" abaixo). Esse é o controle principal; a lista de permissões negadas é defesa em profundidade, porque padrão de comando se contorna (outro interpretador, ferramenta MCP) e o mesmo comando pode mirar homologação ou produção. Um playbook pode pré-autorizar uma ação C específica, com limite, registro e reversão, mas ela continua executada pela pipeline.
+- **Aprovação vale para a ação exata:** quem aprovou, qual ação, quais recursos e parâmetros, e até quando. Mudou o alvo ou o parâmetro, é aprovação nova. Confirmação em texto livre no chat ou em comentário não é aprovação de ação C: ela vira uma execução da pipeline aprovada pelo responsável.
+- Na dúvida entre dois níveis, vale o mais alto.
+- **Verificação, as duas partes:** (1) o ambiente do agente não tem credencial nem rota de rede para produção — conferido listando variáveis de ambiente e arquivos de credencial do agente e tentando conexão ao endereço de produção, que falha; (2) as ações C aparecem como STOP no `AGENTS.md` e como permissão negada na config do agente. Pedir ao agente uma ação C (por exemplo, alterar registro DNS ou rodar migração em produção) termina em recusa com a evidência preparada, não em execução.
+- **Teste de abuso versionado** em `tests/agente/`: casos de injeção de instrução e de pedido fora do escopo, cada um com a recusa esperada. Roda no PR que muda a config do agente, a lista de MCP ou o `AGENTS.md` — na CI no modo Completo, localmente pelo revisor no Médio, com a saída anexada ao PR.
 
 ### Ambiente do agente
 
@@ -202,6 +218,7 @@ Além do OWASP Top 10 for LLM Applications 2026 e do OWASP Top 10 for Agentic Ap
 | Fonte | O que sustenta aqui |
 |---|---|
 | [MCP — Security Best Practices](https://modelcontextprotocol.io/specification/latest/basic/security_best_practices) | Servidor local com privilégio mínimo e comando revisado, escopo mínimo, proibição de *token passthrough* |
+| [OWASP — AI Agent Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html) (CC BY-SA 4.0) | Níveis por impacto da ação, aprovação vinculada à ação exata, `user_confirmed` insuficiente, testes adversariais versionados |
 | [OpenSSF — Security-Focused Guide for AI Code Assistant Instructions](https://best.openssf.org/Security-Focused-Guide-for-AI-Code-Assistant-Instructions) (2025) | Regras de segurança nas instruções do agente; papel de especialista não ajuda |
 | [arXiv 2502.06039](https://arxiv.org/abs/2502.06039) | Instrução de segurança no prompt reduz vulnerabilidade gerada |
 | [Kaspersky — Os perigos ocultos da codificação com IA](https://www.kaspersky.com.br/blog/vibe-coding-2025-risks/24465/) (2025) | Panorama dos incidentes abaixo |

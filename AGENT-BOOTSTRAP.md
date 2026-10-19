@@ -89,6 +89,7 @@ Gere só depois da aprovação, e só os do modo escolhido. Uma branch e um PR p
 | Arquivo | Modo | Conteúdo obrigatório |
 |---|---|---|
 | `AGENTS.md` | todos | O contrato. Estrutura em §5. Teto declarado |
+| `tests/agente/` | médio, completo, se M15 | Casos de abuso do agente (injeção de instrução, pedido fora do escopo, ação de nível C), cada um com a recusa esperada |
 | `CLAUDE.md` | todos | Ponteiro de uma linha para `AGENTS.md` mais a explicação de por que é ponteiro. Nenhuma regra duplicada |
 | `CONTEXT.md` | médio, completo | Glossário do domínio, sem detalhe de implementação. Formato em `templates/CONTEXT.md` |
 | `README.md` | médio, completo | O que é, o que **não** é, pré-requisitos, como rodar, scripts, estrutura, tabela de guardrails, tabela de ADRs, como contribuir, quem decide o quê |
@@ -128,7 +129,7 @@ Na ordem. Detalhe longo não entra aqui — vai para `docs/rules/` e aparece com
 1. O que é este repositório  uma frase + o que NÃO é + o que fazer se pedirem o que não é
 2. Comandos                  os que existem de verdade, com o que roda antes de "terminei"
 3. Regras invioláveis        numeradas, checáveis em diff, com exemplo ✅/❌ onde ajudar; inclui as de segurança da stack, citando CWE ou OWASP
-4. Regras de STOP            tabela sintoma | PARE, não faça | caminho correto
+4. Regras de STOP            tabela sintoma | PARE, não faça | caminho correto; inclui as ações de nível C do M15
 5. Superfícies e fronteiras  tabela de superfície × marca × sessão × repositório
 6. Conteúdo / domínio        ponteiro para CONTEXT.md + invariantes e unidades
 7. Desempenho e a11y         números que bloqueiam merge, e a consequência arquitetural deles
