@@ -6,7 +6,7 @@ Regras (o código entre colchetes aparece em cada erro e é o que os canários c
   [link]     link relativo aponta para arquivo que não existe
   [ancora]   link para âncora que não existe no arquivo de destino
   [pergunta] ID de pergunta da entrevista (A1, E4a, H8…) citado e não definido
-  [modulo]   ID de módulo fora do catálogo M1–M15
+  [modulo]   ID de módulo fora do catálogo M1–M16
 
 A pasta .github não é escaneada: ela guarda os canários, que quebram as regras de propósito.
 Saída diferente de zero quando há erro. Cada linha diz arquivo, regra e o que fazer.
@@ -16,7 +16,7 @@ import re
 import sys
 
 RULES = ("link", "ancora", "pergunta", "modulo")
-MODULE_MAX = 15
+MODULE_MAX = 16
 
 root = pathlib.Path(sys.argv[1] if len(sys.argv) > 1 else ".").resolve()
 files = sorted(p for p in root.rglob("*.md") if not {".git", ".github"} & set(p.relative_to(root).parts))

@@ -1,3 +1,3 @@
 # Caso
 
-Ative o M16 quando houver gatilho.
+Ative o M17 quando houver gatilho.
