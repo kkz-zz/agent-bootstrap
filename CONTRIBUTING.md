@@ -25,6 +25,13 @@ Contribuição boa aqui é regra que veio de um setup real e evitou um problema 
    python3 -I .github/scripts/check_docs.py .
    ```
    Regra nova no `check_docs.py` entra com caso em `.github/canarios/check-docs/must-block/<regra>/`; sem ele, os canários reprovam.
+
+   O workflow `segredos` roda o [gitleaks](https://github.com/gitleaks/gitleaks) no histórico completo. Para rodar local, com o gitleaks instalado:
+   ```
+   python3 -I .github/scripts/canario_segredos.py "$(command -v gitleaks)"
+   gitleaks git --redact --no-banner -v .
+   ```
+   Falso positivo entra em `.gitleaksignore`, com a justificativa no commit. Segredo real encontrado é **rotacionado**; apagar o commit não basta.
 4. Teste de fumaça: rode o bootstrap com um agente num repositório de exemplo e anexe ao PR o trecho da sessão em que a regra nova atuou.
 
 Ao contribuir, você concorda em licenciar sua contribuição sob [CC BY-SA 4.0](LICENSE).

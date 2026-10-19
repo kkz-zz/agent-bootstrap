@@ -1,0 +1,52 @@
+# Scan de segredos do pacote agent-bootstrap. Regras em modulos/seguranca.md (M4, M5).
+# Histórico completo, bloqueante. Exceção só por arquivo .gitleaksignore com justificativa
+# no commit, nunca desligando o job. Mudança neste arquivo vai em PR dedicado.
+name: segredos
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: segredos-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  GITLEAKS_VERSION: "8.30.1"
+  # sha256 de gitleaks_8.30.1_linux_x64.tar.gz, conferido contra gitleaks_8.30.1_checksums.txt da release oficial
+  GITLEAKS_SHA256: "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb"
+
+jobs:
+  segredos:
+    name: segredos
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    defaults:
+      run:
+        shell: bash  # bash -eo pipefail: nenhum exit code engolido
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          fetch-depth: 0  # histórico completo
+          persist-credentials: false
+
+      - name: Instala gitleaks (versão e checksum fixados)
+        run: |
+          cd "$RUNNER_TEMP"
+          curl -sSfL -o gitleaks.tar.gz \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          echo "${GITLEAKS_SHA256}  gitleaks.tar.gz" | sha256sum -c -
+          tar -xzf gitleaks.tar.gz gitleaks
+          ./gitleaks version
+
+      # gate: não remover sem PR dedicado. Canário antes do scan.
+      - name: Canário do scan de segredos
+        run: python3 -I .github/scripts/canario_segredos.py "$RUNNER_TEMP/gitleaks"
+
+      # gate: não remover sem PR dedicado.
+      - name: Scan de segredos no histórico completo
+        run: '"$RUNNER_TEMP/gitleaks" git --redact --no-banner -v .'

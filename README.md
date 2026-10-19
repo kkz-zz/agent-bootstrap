@@ -28,7 +28,7 @@ modulos/
   engenharia.md                 M6, M7, M8, M9, M10, M12
 templates/
   ADR-0000.md  CONTEXT.md  DESIGN.md  manifest.json
-.github/                        CI deste pacote (não copiar): check-docs, canários, workflow
+.github/                        CI deste pacote (não copiar): check-docs, scan de segredos, canários, workflows
 ```
 
 ## Modos
