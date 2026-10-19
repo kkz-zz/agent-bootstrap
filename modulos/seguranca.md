@@ -28,6 +28,15 @@ Módulos **M4** (sempre), **M5** (modo Completo) e a parte de segurança de **M7
 - Nenhum segredo de produção alcançável pelo gate de PR. Permissão mínima no workflow.
 - Config que o agente executa (hooks, workflows, scripts de gate, husky, config do agente, lista de MCP) muda só por PR com revisor humano — `CODEOWNERS` sobre esses caminhos.
 
+### Contas com poder sobre o projeto
+
+Senha vazada de conta administrativa dá acesso ao repositório, ao provedor e ao domínio de uma vez; MFA é a defesa que mais reduz esse risco (OWASP, CISA).
+
+- **MFA obrigatório** nas contas que alteram o projeto: organização e repositório, provedor de hospedagem e nuvem, registro de domínio e DNS, registro de pacotes, e-mail que recupera essas contas. Prefira método resistente a phishing (chave FIDO2/WebAuthn ou passkey) para administradores.
+- **Recuperação testada:** códigos de recuperação guardados fora da conta que eles recuperam, e pelo menos dois administradores por conta crítica, para que a perda de um autenticador não tranque o projeto.
+- Conta administrativa separada da conta de uso diário, quando o provedor permite.
+- **Verificação:** onde há API, o `CHECKLIST.md` traz o comando (exemplo para organização no GitHub, rodado por um dono da organização: `gh api orgs/<org> --jq .two_factor_requirement_enabled` retorna `true`; `null` significa sem permissão para ver, não "ligado"). Conta pessoal e provedor sem API são conferidos pelo dono, com data. A lista de contas fica no `CHECKLIST.md` sem nenhuma credencial.
+
 ### Código gerado por IA
 
 Código gerado é tratado como código de terceiro não revisado. Estudos com dezenas de modelos encontram falha do OWASP Top 10 em parte relevante do código que compila, e a segurança piora ao longo de iterações sem revisão (ver [Referências](#referências)).
@@ -63,6 +72,19 @@ Código gerado é tratado como código de terceiro não revisado. Estudos com de
 - Erro nunca engolido; nenhum dado pessoal em log; mensagem de erro que não vaza estrutura interna.
 - Rate limit nos endpoints públicos; honeypot em formulário; preferir controle próprio a script de terceiro que exija consentimento.
 - Cabeçalhos (quando há navegador): CSP com nonce, sem `unsafe-inline` em script; HSTS; `nosniff`; política de referrer; política de permissões negando o que não usa; bloqueio de enquadramento. **Verificados por teste**, não por inspeção.
+- **HTTPS em todas as rotas:** HTTP redireciona para HTTPS, certificado válido em cada domínio e subdomínio publicado, nenhum conteúdo misto. A expiração do certificado gera alerta antes do vencimento, para quem pode renovar. O redirecionamento e os atributos se testam localmente; certificado e alerta se conferem contra o domínio publicado, pela CI ou pelo dono.
+
+### Sessão e login — quando há sessão
+
+Sessão mal encerrada ou cookie sem atributo transforma um XSS ou um computador compartilhado em conta tomada. Use a sessão da biblioteca ou do framework mantido; não escreva gerenciador próprio.
+
+- Cookie de sessão com `Secure`, `HttpOnly` e `SameSite=Strict` (ou `Lax` quando um fluxo de navegação externa exige), sem `Domain` mais amplo que o necessário.
+- **ID de sessão trocado no login** e em toda mudança de privilégio que o sistema tiver (elevação para admin, troca de conta).
+- **Logout invalida a sessão no servidor.** Teste: reenviar o cookie antigo depois do logout recebe 401 ou redirecionamento para login, nunca a página autenticada.
+- Expiração por inatividade e expiração absoluta, ambas no servidor. Os valores dependem do risco da aplicação e são definidos pelo dono e registrados no ADR; o agente não inventa número.
+- Proteção contra CSRF conforme a arquitetura: token em formulário com sessão por cookie, ou `SameSite` mais verificação de origem.
+- **Abuso de login:** limite de tentativas por origem e por identificador enviado (exista a conta ou não), com atraso crescente ou desafio. Por identificador, o limite atrasa ou pede desafio, mas não tranca a conta: um atacante não pode impedir o dono legítimo de entrar, e a recuperação de senha continua disponível. Limiares, atraso e teto são definidos pelo dono. Use o limitador do framework, da biblioteca ou do proxy; código próprio só com o motivo no ADR.
+- **Mensagem que não revela se a conta existe**, em login, cadastro e recuperação de senha. Exemplo: "Se o e-mail estiver cadastrado, você receberá um link." Status HTTP, inclusive o de limite atingido, e trabalho feito também não diferenciam conta existente de inexistente: o hash de senha é calculado nos dois casos.
 
 ---
 
@@ -114,6 +136,8 @@ Regras com redação própria. Os relatórios e incidentes mostram o problema; a
 | [OpenSSF — Security-Focused Guide for AI Code Assistant Instructions](https://best.openssf.org/Security-Focused-Guide-for-AI-Code-Assistant-Instructions) (2025) | Código gerado como não confiável, SAST, funções perigosas, dependência verificada, regras de segurança nas instruções do agente |
 | [OWASP Top 10](https://owasp.org/www-project-top-ten/) e [CWE Top 25](https://cwe.mitre.org/top25/) | Classes de falha citadas nas regras (CWE-78, 89, 94, 306, 434, 502, 862) |
 | [GitHub Docs — Secure use reference (Actions)](https://docs.github.com/en/actions/reference/security/secure-use) | OIDC, ambiente com revisor, segredo por valor e derivado mascarado, SHA do repositório oficial |
+| [OWASP — Session Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html) e [Authentication Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html) (CC BY-SA 4.0) | Atributos de cookie, troca de ID no login, logout no servidor, tempos definidos por risco, limite de tentativas sem bloqueio abusivo, mensagem genérica, MFA |
+| [CISA — Implementing Phishing-Resistant MFA](https://www.cisa.gov/sites/default/files/publications/fact-sheet-implementing-phishing-resistant-mfa-508c.pdf) | MFA resistente a phishing (FIDO/WebAuthn) priorizado para administradores |
 
 ### Estudos e incidentes
 
