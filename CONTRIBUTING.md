@@ -18,7 +18,7 @@ Contribuição boa aqui é regra que veio de um setup real e evitou um problema 
 ## Como
 
 1. Abra uma issue descrevendo o problema que a regra resolve.
-2. PR com uma mudança temática por vez. Se mexer em ID de módulo (M1–M15) ou de pergunta (A1, D9…), atualize todas as referências.
+2. PR com uma mudança temática por vez. Se mexer em ID de módulo (M1–M16) ou de pergunta (A1, D9…), atualize todas as referências.
 3. Rode localmente o que a CI roda, e anexe a saída ao PR:
    ```
    python3 -I .github/scripts/run_canaries.py

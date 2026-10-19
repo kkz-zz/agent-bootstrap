@@ -27,6 +27,7 @@ Ao terminar, a pasta pode sair do repositório — ela já cumpriu a função. O
 | `modulos/privacidade.md` | M11, bloco E da entrevista, inventário, gates de privacidade, referências de LGPD e ECA Digital | Se coleta dado de pessoa ou o produto é de acesso provável por menores |
 | `modulos/ia.md` | M3 (anti-slop), uso de agente no repositório, M14 (produto com LLM) — mapeados ao OWASP Top 10 para LLM 2026 | Sempre |
 | `modulos/engenharia.md` | M6, M7, M8, M9, M10, M12 | Por gatilho |
+| `modulos/operacao.md` | M16: exposição, backup com restauração testada, alertas, publicação e incidente de operação | Se há superfície publicada que o time opera |
 | `templates/` | ADR, `CONTEXT.md`, `DESIGN.md`, `manifest.json` | Fase 3 |
 
 ---
@@ -79,6 +80,7 @@ Ative por gatilho, não por gosto. Para cada módulo ativado, diga ao dono o que
 | M13 | Documentos gerados | emite .docx, .pdf, .xlsx, .svg, .dxf | `modulos/design.md` |
 | M14 | Produto que usa LLM | H1 afirmativo | `modulos/ia.md` |
 | M15 | Agente no repositório | sempre que um agente commita, roda comando ou usa MCP | `modulos/ia.md` |
+| M16 | Operação | C1 inclui superfície publicada e B4 indica que o time administra o deploy | `modulos/operacao.md` |
 
 ---
 
@@ -99,6 +101,7 @@ Gere só depois da aprovação, e só os do modo escolhido. Uma branch e um PR p
 | `docs/rules/ia.md` | sempre | Permissões do agente, sandbox e alcance de rede, memória persistente, fontes não confiáveis, MCP, e — se M14 — controles por risco do OWASP LLM Top 10 |
 | `docs/rules/seguranca.md` | todos | Fronteira entre superfícies, segredos (inclusive em artefato e na pipeline), autorização no servidor, funções proibidas, validação, cabeçalhos, supply chain, pipeline, checklist de revisão de diff de IA |
 | `docs/rules/privacidade.md` | se M11 | Inventário com base legal por finalidade (artigo e inciso), testes de legítimo interesse, matriz de retenção, consentimento, canal e prazos do titular, operadores e transferências internacionais |
+| `docs/runbooks/incidente-operacao.md` | se M16, médio e completo | Quem decide, quem é avisado e como, primeiros passos de contenção, onde ficam evidência e linha do tempo, como se declara encerrado, data do último exercício; cópia fora do sistema que pode cair |
 | `docs/runbooks/incidente-dados.md` | se M11, médio e completo | Quem decide, prazos de comunicação à ANPD e aos titulares, modelo de comunicação, onde fica o registro do incidente |
 | `docs/adr/0000-template.md` | médio, completo | Cópia de `templates/ADR-0000.md` |
 | `docs/adr/0001…` | médio, completo | Um ADR por decisão já tomada na entrevista. No mínimo: stack; arquitetura e fronteiras; design system e marca; guardrails; segurança e supply chain. Risco que bloqueia alguma frente entra numerado |
@@ -113,7 +116,7 @@ Gere só depois da aprovação, e só os do modo escolhido. Uma branch e um PR p
 | workflow de CI | completo | Ver M5. Todos os checks bloqueantes, canários antes dos gates, SAST da linguagem do projeto |
 | workflow de scan de segredos | completo | Histórico completo, bloqueante |
 | config do bot de dependência | completo | Modo na primeira linha, majors fora, agrupado |
-| `CODEOWNERS` | completo | Caminhos do harness mais contrato, ADRs, pacote de design system e, se M11, `docs/rules/privacidade.md` e `docs/runbooks/incidente-dados.md` |
+| `CODEOWNERS` | completo | Caminhos do harness mais contrato, ADRs, pacote de design system e, se M11, `docs/rules/privacidade.md` e `docs/runbooks/incidente-dados.md`; se M16, `docs/runbooks/incidente-operacao.md` |
 | config de pins do gerenciador | completo | Versão exata por padrão |
 
 Placeholder que o dono precisa preencher: use `⟨...⟩` e liste todos no final, com o comando que resolve cada um quando houver.

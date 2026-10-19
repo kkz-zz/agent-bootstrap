@@ -26,6 +26,7 @@ modulos/
   privacidade.md                M11, bloco E, inventário, gates; LGPD, ECA Digital e guias da ANPD
   ia.md                         M3 anti-slop, M15 agente no repositório, M14 produto com LLM (OWASP LLM Top 10 2026)
   engenharia.md                 M6, M7, M8, M9, M10, M12
+  operacao.md                   M16: exposição, backup, alertas, publicação, incidente
 templates/
   ADR-0000.md  CONTEXT.md  DESIGN.md  manifest.json
 .github/                        CI deste pacote (não copiar): check-docs, scan de segredos, canários, workflows
@@ -54,6 +55,7 @@ Derivado de dois setups reais: um monorepo TypeScript de PDV offline, multi-tena
 | [OpenSSF — Security-Focused Guide for AI Code Assistant Instructions](https://best.openssf.org/Security-Focused-Guide-for-AI-Code-Assistant-Instructions) | Código gerado por IA no M4 e regras de segurança no `AGENTS.md` |
 | [GitHub Docs — Secure use reference](https://docs.github.com/en/actions/reference/security/secure-use) | Segredos na pipeline no M5 |
 | [OWASP — Session Management](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html) e [Authentication](https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html) Cheat Sheets (CC BY-SA 4.0) e [CISA — Phishing-Resistant MFA](https://www.cisa.gov/sites/default/files/publications/fact-sheet-implementing-phishing-resistant-mfa-508c.pdf) | Sessão, login e MFA nas contas do projeto, em M4 e M7 |
+| [NIST — Cybersecurity Framework 2.0](https://www.nist.gov/cyberframework) e [CISA — #StopRansomware Guide](https://www.cisa.gov/stopransomware/ransomware-guide) | Operação no M16: backup com restauração testada, cópia fora do alcance da produção, plano de incidente exercitado |
 | [Kaspersky — Os perigos ocultos da codificação com IA](https://www.kaspersky.com.br/blog/vibe-coding-2025-risks/24465/) e estudos que ele cita (Veracode, Wiz, arXiv) | Levantamento de incidentes e estudos que originou a revisão de segurança |
 | [LGPD — Lei 13.709/2018](https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709compilado.htm), [ECA Digital — Lei 15.211/2025](https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/lei/l15211.htm) e [resoluções da ANPD](https://www.gov.br/anpd/pt-br/acesso-a-informacao/institucional/atos-normativos/regulamentacoes_anpd) (atos oficiais) | Bases legais, direitos e prazos do titular, incidentes, encarregado, transferência internacional e requisitos para produto acessado por menores em `modulos/privacidade.md` |
 | [web.dev — Web Vitals](https://web.dev/articles/vitals) (CC BY 4.0), [MDN — `Cache-Control`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control) e [MDN — `<input type="number">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/input/number) (CC BY-SA 2.5 e código em CC0) | Alvos de campo, cache por classe de conteúdo e campos de código em formulários no M6 |
